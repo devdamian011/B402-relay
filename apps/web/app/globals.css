@@ -1,0 +1,19 @@
+/* Tailwind v4: one import replaces the old three @tailwind directives, and config is
+   CSS-first — there is no tailwind.config.ts. `@source` tells the scanner to also look at
+   the shared UI package, since it lives outside this app's own directory in the monorepo. */
+@import "tailwindcss";
+@source "../../../packages/ui/src";
+
+html {
+  color-scheme: light;
+}
+
+body {
+  background-color: #fafaf9;
+  color: #0f172a;
+}
+
+:focus-visible {
+  outline: 2px solid #0f172a;
+  outline-offset: 2px;
+}

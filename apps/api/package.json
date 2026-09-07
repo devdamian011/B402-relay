@@ -1,0 +1,26 @@
+{
+  "name": "@b402-relay/api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "lint": "eslint src --ext .ts",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@b402-relay/types": "workspace:*",
+    "@supabase/supabase-js": "^2.85.0",
+    "fastify": "^5.0.0",
+    "@fastify/cors": "^10.0.1",
+    "dotenv": "^16.4.5",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@b402-relay/config": "workspace:*",
+    "@types/node": "^22.7.5",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3"
+  }
+}
