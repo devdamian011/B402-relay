@@ -25,6 +25,9 @@ export interface B402Extra {
   name?: string;
   /** EIP-712 domain version of the token contract. */
   version?: string;
+  /** Confirmed to exist by the quick-start's "echo extra verbatim" warning; exact string
+   *  values (e.g. "permit2-exact" vs "permit2_exact") not independently confirmed. */
+  assetTransferMethod?: string;
   /** Permit2 flows only (permit2-exact / permit2-upto): address that signs the Permit2 message. */
   signerAddress?: string;
   /** Permit2 flows only: the spender address the Permit2 allowance is scoped to (B402 itself). */
@@ -104,7 +107,31 @@ export interface SettleResponse {
   errorReason?: SettleErrorReason;
 }
 
-/** One row in the running record of what the payment flow actually did — Section 9.5. */
+/**
+ * `/papi/v2/b402/supported` response shape. Confirmed field names: top-level `kinds`,
+ * `extensions`, `signers` (per Quick Start: "returns 200 and a JSON body with kinds,
+ * extensions, and signers"), and `kinds[].extra` containing `name`, `version`,
+ * `assetTransferMethod`, `signerAddress`, and (for permit2-* methods) `spenderAddress` — the
+ * quick-start guide explicitly requires echoing this object verbatim into a 402 response's
+ * `paymentRequirements.extra`. The remaining fields on each `kind` (scheme/network/asset/
+ * amount bounds) are inferred from what a seller needs to build `PaymentRequirements` from
+ * this response, NOT individually confirmed field-by-field against a real response — reconcile
+ * once Sandbox credentials allow a real `/supported` call.
+ */
+export interface SupportedKind {
+  scheme: B402Scheme;
+  network: Caip2Network;
+  asset: string;
+  extra: Required<B402Extra>;
+}
+
+export interface SupportedConfigurationsResponse {
+  kinds: SupportedKind[];
+  extensions?: Record<string, unknown>;
+  signers?: string[];
+}
+
+
 export interface DecisionLogEntry {
   timestamp: string;
   step: "requested" | "402_received" | "signed" | "verified" | "settled" | "delivered" | "failed";

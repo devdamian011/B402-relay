@@ -2,6 +2,7 @@ import type { FastifyInstance } from "fastify";
 import type { PaymentRequirements } from "@b402-relay/types";
 import { buildStubPaymentPayload } from "../lib/agent-signer";
 import { logDecision, getDecisionLog } from "../lib/decision-log";
+import { getSpendStatus } from "../lib/spend-guard";
 
 const RESOURCE_PATH = "/api/resource/btc-insight";
 
@@ -55,4 +56,5 @@ export function registerAgentRoute(app: FastifyInstance) {
   });
 
   app.get("/api/agent/decision-log", async () => ({ entries: getDecisionLog() }));
+  app.get("/api/agent/spend-status", async () => getSpendStatus());
 }
